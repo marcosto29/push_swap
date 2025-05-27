@@ -6,7 +6,7 @@
 #    By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/12 16:09:09 by matoledo          #+#    #+#              #
-#    Updated: 2025/05/26 21:29:04 by matoledo         ###   ########.fr        #
+#    Updated: 2025/05/27 13:42:14 by matoledo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,10 +69,10 @@ SRCS = ft_atoi.c \
 #what this is saying is: OBJS is the list of SRCS but with .o instead of .c
 OBJS = $(SRCS:.c=.o)
 
-all: $(NAME)
+DIRS = ./libftprintf \
+		./libftget_next_line \
 
-bonus: $(NAME) $(OBJS)
-	ar -rcs $(NAME) $(OBJS)
+all: $(NAME)
 
 #when creating the library access each of the subdirectories and create it respectives libraries
 #this way each function can have its own .a
@@ -82,19 +82,32 @@ bonus: $(NAME) $(OBJS)
 	done
 
 $(NAME): $(OBJS)
-	ar -rcs $(NAME) $(OBJS)
+	@for dir in $(DIRS); do \
+		$(MAKE) -C $$dir all; \
+		ar -rcs $(NAME) $$dir/*.o; \
+	done
+	@ar -rcs $(NAME) $(OBJS)
 
 #when the makefile tries to access the .o files but doesn't finds them is gonna search for a rule to create them
 #this is that rule
 #$< refers to the first parameter in this case %.c (what is at the right of the :)
 %.o : %.c
-	$(CC) -c $(CFLAGS) $<
+	@$(CC) -c $(CFLAGS) $<
 
 clean:
-	rm -rf *.o
+	@for dir in $(DIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done
+	@rm -rf *.o
 
 fclean: clean
-	rm -rf *.a
+	@for dir in $(DIRS); do \
+		$(MAKE) -C $$dir fclean; \
+	done
+	@rm -rf *.a
 
 #when re, the fclean and all target are executed
 re: fclean all
+	@for dir in $(DIRS); do \
+		$(MAKE) -C $$dir re; \
+	done
