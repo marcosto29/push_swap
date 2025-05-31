@@ -6,12 +6,14 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:18:51 by matoledo          #+#    #+#             */
-/*   Updated: 2025/05/28 17:13:40 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/05/31 14:50:39 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
+
+int	i = 0;
 
 int	ft_isdigit(int c)
 {
@@ -160,6 +162,7 @@ t_list	*previous_node(t_list **lst, t_list *node)
 
 void	swap(t_list *s)
 {
+	i++;
 	int aux;
 
 	if(ft_lstsize(s) <= 0)
@@ -172,18 +175,20 @@ void	swap(t_list *s)
 
 void	push(t_list **s1, t_list **s2)
 {
+	i++;
 	t_list	*aux;
 	
-	if (ft_lstsize(s2) <= 0)
+	if (ft_lstsize(s1) <= 0)
 		return ;
-	aux = (*s2);
-	(*s2) = (*s2)->next;
-	aux->next = (*s1);
-	(*s1) = aux;
+	aux = (*s1);
+	(*s1) = (*s1)->next;
+	aux->next = (*s2);
+	(*s2) = aux;
 }
 
 void	rotate(t_list **s)
 {
+	i++;
 	t_list	*pt_aux;
 	
 	if (ft_lstsize((*s)) <= 1)
@@ -196,6 +201,7 @@ void	rotate(t_list **s)
 
 void	reverse_rotate(t_list **s)
 {
+	i++;
 	t_list	*pt_aux;
 	
 	if (ft_lstsize((*s)) <= 1)
@@ -222,21 +228,81 @@ void	fill_list(t_list **lst, char **s, int size)
 	}
 }
 
+void	restart_list(t_list **lst, int *max_number)
+{
+	while ((*lst)->content != max_number)
+		rotate(lst);
+}
+
+void	sort_list(t_list **a, t_list **b)
+{
+	int	*max_number;
+
+	max_number = (*a) -> content;
+	push(a, b);
+	while (*a)
+	{
+		if((*a)->content > (*b)->content)
+		{
+			if ((*a)->content > ft_lstlast((*b))->content)
+			{
+				max_number = (*a) -> content;
+				push(a, b);
+			}
+			else
+			{
+				while ((*a)->content > (*b) -> content)
+					reverse_rotate(b);
+				push(a, b);
+			}
+		}
+		else
+		{
+			if ((*a)->content < ft_lstlast((*b))->content)
+			{
+				push(a, b);
+				rotate(b);
+			}
+			else
+			{
+				while ((*a)->content < (*b) -> content)
+					rotate(b);
+				push(a, b);
+			}
+		}
+		restart_list(b, max_number);
+	}
+}
+
 int	main(int argc, char **argv)
 {
-	t_list	**lst;
-	char	*str[] = {"2", "3", "34", "54"};
-
+	t_list	**a;
+	t_list	**b;
+char	*str[] = {
+	"83", "5", "291", "12", "47", "390", "17", "64", "256", "804",
+	"38", "700", "129", "6", "911", "302", "10", "423", "67", "99",
+	"205", "871", "3", "58", "71", "88", "940", "15", "32", "199",
+	"521", "110", "8", "675", "49", "222", "370", "41", "93", "1002",
+	"913", "27", "3021", "76", "134", "818", "901", "2", "104", "999",
+	"55", "342", "707", "611", "78", "20", "804", "47", "168", "444",
+	"303", "18", "92", "84", "123", "66", "201", "987", "450", "23",
+	"333", "600", "47", "1100", "9999", "51", "109", "800", "290", "145",
+	"314", "400", "753", "321", "22", "172", "299", "67", "13", "9998",
+	"75", "87", "202", "308", "409", "60", "99", "777", "306", "44"
+};
 	//if (argc >= 3)
 	//{
 		//argv++;
-		lst = ft_calloc(sizeof(t_list *), 1);
-		fill_list(lst, str, 4);
+	b = ft_calloc(sizeof(t_list *), 1);
+	a = ft_calloc(sizeof(t_list *), 1);
+	fill_list(a, str, 100);
+	sort_list(a, b);
+	
 	//}
-
-	while (*lst)
+	while (*b)
 	{
-		printf("%d\n", (*lst)->content);
-		(*lst) = (*lst)->next;
+		printf("%d\n", (*b)->content);
+		(*b) = (*b)->next;
 	}
+	printf("%d operaciones\n", i);
 }

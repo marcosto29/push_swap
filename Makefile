@@ -6,7 +6,7 @@
 #    By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 19:53:00 by matoledo          #+#    #+#              #
-#    Updated: 2025/05/27 13:47:57 by matoledo         ###   ########.fr        #
+#    Updated: 2025/05/31 12:58:32 by matoledo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ CFLAGS =
 
 SRCS = push_swap.c \
 		push_swap_utils.c \
+		sort_algorithm.c \
 
 OBJS = $(SRCS:.c=.o)
 

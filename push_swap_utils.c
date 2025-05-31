@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:41:58 by matoledo          #+#    #+#             */
-/*   Updated: 2025/05/28 16:30:26 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/05/31 12:50:59 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,14 @@ void	swap(t_list *s)
 	}
 }
 
-
 void	push(t_list **s1, t_list **s2)
 {
 	t_list	*aux;
 	
-	if (ft_lstsize(s2) <= 0)
+	if (ft_lstsize(s1) <= 0)
 		return ;
-	aux = (*s2);
-	(*s2) = (*s2)->next;
+	aux = (*s1);
+	(*s1) = (*s1)->next;
 	aux->next = (*s1);
 	(*s1) = aux;
 }

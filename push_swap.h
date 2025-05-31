@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:43:37 by matoledo          #+#    #+#             */
-/*   Updated: 2025/05/28 16:27:49 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/05/31 12:57:21 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ void	swap(t_list *s);
 void	push(t_list **s1, t_list **s2);
 void	rotate(t_list **s);
 void	reverse_rotate(t_list **s);
+void	sort_list(t_list **a, t_list **b);
 
 #endif
