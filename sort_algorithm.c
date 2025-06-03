@@ -6,50 +6,39 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 12:48:57 by matoledo          #+#    #+#             */
-/*   Updated: 2025/05/31 14:37:30 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/03 21:00:17 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	restart_list(t_list **lst, int *max_number)
-{
-	while ((*lst)->content != max_number)
-	{
-		(*lst) = (*lst)->next;
-	}
-}
+// void	sort_list(t_list **a, t_list **b)
+// {
+// 	int	min_number;
 
-void	sort_list(t_list **a, t_list **b)
-{
-	push(a, b);
-	while (*a)
-	{
-		if((*a) > (*b))
-		{
-			if ((*a) > ft_lstlast((*b)))
-				push(a, b);
-			else
-			{
-				while ((*a) < ft_lstlast((*b)))
-					reverse_rotate(b);
-				push(a, b);
-			}
-		}
-		else
-		{
-			if ((*a) < ft_lstlast((*b)))
-			{
-				push(a, b);
-				rotate(b);
-			}
-			else
-			{
-				while ((*a) > ft_lstlast((*b)))
-					reverse_rotate(b);
-				push(a, b);
-			}
-		}
-		(*a) = (*a) -> next;
-	}
-}
+// 	push(a, b, 'b');
+// 	push(a, b, 'b');
+// 	push(a, b, 'b');
+// 	min_number = get_min_number(b);
+// 	sort_3_elements(b, min_number);
+// 	while(*a)
+// 	{
+// 		if (*(int *)(*a)->content < min_number)
+// 		{
+// 			//meter funcion para ver si se tardaria menos en hacer reverse o rotate normal
+// 			while (*(int *)(*b)->content != min_number)
+// 				rotate(b, 'b');
+// 			min_number = *(int *)(*a)->content;
+// 			push(a, b, 'b');
+// 		}
+// 		else 
+// 		{
+// 			while (!(*(int *)(*b)->content > *(int *)(*a)->content &&
+// 					*(int *)(ft_lstlast(*b))->content < *(int *)(*a)->content))
+// 				rotate(b, 'b');
+// 			push(a, b, 'b');
+// 		}
+// 	}
+// 	while (*(int *)(*b)->content != min_number)
+// 		rotate(b, 'b');
+// }
