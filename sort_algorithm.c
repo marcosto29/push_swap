@@ -6,13 +6,13 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 12:48:57 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/04 18:30:00 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:31:18 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-// int	next_movement(t_list **b, int extreme_number)
+// int	better_movement(t_list **b, int extreme_number)
 // {
 // 	int		counter1;
 // 	t_list	*pt_aux;
@@ -63,7 +63,7 @@
 // {
 // 	int	movement;
 
-// 	movement = next_movement(lst, min_number);
+// 	movement = better_movement(lst, min_number);
 // 	while (*(int *)(*lst )->content != min_number)
 // 	{
 // 		if (movement == 0)
@@ -102,7 +102,7 @@
 // {
 // 	int		min_number;
 // 	int		max_number;
-// 	int		movement;
+// 	int		next_movement;
 // 	int		next_number;
 
 // 	push(a, b, 'b');
@@ -113,13 +113,15 @@
 // 	sort_3_elements(b, min_number);
 // 	while(*a)
 // 	{
+// 		//esto busca el mejor movimiento para el primer nodo
+// 		//pero antes de esto se podría mirar si algún otro nodo tiene mejor movimiento
 // 		next_number = search_number(*a, b, min_number, max_number);
-// 		movement = next_movement(b, next_number);
+// 		next_movement = better_movement(b, next_number);
 // 		while (*(int *)(*b)->content != next_number)
 // 		{
-// 			if (movement == 0)
+// 			if (next_movement == 0)
 // 				rotate(b, 'b');
-// 			if (movement == 1)
+// 			if (next_movement == 1)
 // 				reverse_rotate(b, 'b');
 // 		}
 // 		if (*(int *)(*a)->content > max_number)

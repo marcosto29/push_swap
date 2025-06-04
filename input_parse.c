@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 10:56:59 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/03 13:25:08 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:28:43 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	check_input(char *num)
 {
 	while (*num)
 	{
-		if (ft_isdigit(*num) == 0 && 
-			!((*num >= 9 && *num <= 13) || *num == 32))
+		if (ft_isdigit(*num) == 0
+			&& !((*num >= 9 && *num <= 13) || *num == 32))
 			return (0);
 		num++;
 	}
@@ -41,7 +41,7 @@ int	add_numbers(t_list **lst, char **pt_aux)
 	t_list	*node;
 
 	while (*pt_aux)
-	{		
+	{
 		aux = malloc(sizeof(int));
 		*aux = ft_atoi(*pt_aux);
 		if (check_repeated(*lst, *aux) == 0)
@@ -60,7 +60,7 @@ int	fill_list(t_list **lst, char **s)
 {
 	char	**pt_aux;
 
-	while(*s)
+	while (*s)
 	{
 		if (check_input(*s) == 0)
 		{

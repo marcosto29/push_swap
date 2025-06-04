@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:41:58 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/04 09:59:07 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:28:12 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ t_list	*previous_node(t_list **lst, t_list *node)
 	aux = *lst;
 	if (aux == node)
 		return (ft_lstlast(lst));
-	while(aux->next)
+	while (aux->next)
 	{
 		if (aux->next == node)
-			return aux;
+			return (aux);
 		aux = aux->next;
 	}
 	return (NULL);
@@ -30,9 +30,9 @@ t_list	*previous_node(t_list **lst, t_list *node)
 
 void	swap(t_list *s, char lst)
 {
-	int aux;
+	int	aux;
 
-	if(ft_lstsize(s) <= 0)
+	if (ft_lstsize(s) <= 0)
 	{
 		aux = *(int *)s->content;
 		*(int *)s->content = *(int *)s->next->content;
@@ -46,7 +46,7 @@ void	swap(t_list *s, char lst)
 void	push(t_list **s1, t_list **s2, char lst)
 {
 	t_list	*aux;
-	
+
 	if (ft_lstsize(*s1) <= 0)
 		return ;
 	aux = (*s1);
@@ -61,7 +61,7 @@ void	push(t_list **s1, t_list **s2, char lst)
 void	rotate(t_list **s, char lst)
 {
 	t_list	*pt_aux;
-	
+
 	if (ft_lstsize(*s) <= 1)
 		return ;
 	pt_aux = (*s);
@@ -76,7 +76,7 @@ void	rotate(t_list **s, char lst)
 void	reverse_rotate(t_list **s, char lst)
 {
 	t_list	*pt_aux;
-	
+
 	if (ft_lstsize(*s) <= 1)
 		return ;
 	pt_aux = ft_lstlast((*s));

@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:18:51 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/04 18:47:46 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/04 22:13:42 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -461,21 +461,23 @@ int	get_number(t_list **lst, int (*cond)(int num1, int num2))
 
 	pt_aux = *lst;
 	extreme_number = *(int *)pt_aux->content;
-	while(pt_aux)
+	while (pt_aux)
 	{
 		if (cond(extreme_number, *(int *)pt_aux->content) == 1)
-			extreme_number = *(int *)pt_aux->content;			
+			extreme_number = *(int *)pt_aux->content;	
 		pt_aux = pt_aux->next;
 	}
 	return (extreme_number);
 }
 
-void	sort_3_elements(t_list **lst, int min_number)
+void	sort_3_elements(t_list **lst)
 {
 	int	movement;
+	int	min_number;
 
+	min_number = get_number(lst, smaller_number);
 	movement = better_movement(lst, min_number);
-	while (*(int *)(*lst )->content != min_number)
+	while (*(int *)(*lst)->content != min_number)
 	{
 		if (movement == 0)
 			rotate(lst, 'b');
@@ -494,39 +496,36 @@ void	sort_3_elements(t_list **lst, int min_number)
 	}
 }
 
-int	search_number(t_list *a, t_list **b, int min, int max)
+int	search_number(t_list *a, t_list **b)
 {
 	t_list	*pt_aux;
+	int		min;
+	int		max;
 
+	min = get_number(b, smaller_number);
+	max = get_number(b, bigger_number);
 	pt_aux = *b;
-	if (*(int *)a->content < min)
+	if (*(int *)a->content < min || *(int *)a->content > max)
 		return (min);
-	if (*(int *)a->content > max)
-		return (min);
-	while (!(*(int *)pt_aux->content > *(int *)a->content &&
-		*(int *)previous_node(b, pt_aux)->content < *(int *)a->content))
+	while (!(*(int *)pt_aux->content > *(int *)a->content
+			&& *(int *)previous_node(b, pt_aux)->content < *(int *)a->content))
 		pt_aux = pt_aux->next;
 	return (*(int *)pt_aux->content);
 }
 
 void	sort_list(t_list **a, t_list **b)
 {
-	int		min_number;
-	int		max_number;
 	int		next_movement;
 	int		next_number;
 
 	push(a, b, 'b');
 	push(a, b, 'b');
 	push(a, b, 'b');
-	min_number = get_number(b, smaller_number);
-	max_number = get_number(b, bigger_number);
-	sort_3_elements(b, min_number);
-	while(*a)
+	sort_3_elements(b);
+	while (*a)
 	{
-		//esto busca el mejor movimiento para el primer nodo
-		//pero antes de esto se podría mirar si algún otro nodo tiene mejor movimiento
-		next_number = search_number(*a, b, min_number, max_number);
+		//better_node(a, b);
+		next_number = search_number(*a, b);
 		next_movement = better_movement(b, next_number);
 		while (*(int *)(*b)->content != next_number)
 		{
@@ -535,14 +534,8 @@ void	sort_list(t_list **a, t_list **b)
 			if (next_movement == 1)
 				reverse_rotate(b, 'b');
 		}
-		if (*(int *)(*a)->content > max_number)
-			max_number = *(int *)(*a)->content;
-		if (*(int *)(*a)->content < min_number)
-			min_number = *(int *)(*a)->content;
 		push(a, b, 'b');
 	}
-	while (*(int *)(*b)->content != min_number)
-		rotate(b, 'b');
 }
 
 int	main(int argc, char **argv)
