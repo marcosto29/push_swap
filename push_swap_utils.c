@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:41:58 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/01 19:49:41 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/04 09:59:07 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_list	*previous_node(t_list **lst, t_list *node)
 	t_list	*aux;
 
 	aux = *lst;
+	if (aux == node)
+		return (ft_lstlast(lst));
 	while(aux->next)
 	{
 		if (aux->next == node)

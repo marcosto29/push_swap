@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:43:37 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/03 13:24:46 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:09:09 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ int		add_numbers(t_list **lst, char **pt_aux);
 int		fill_list(t_list **lst, char **s);
 void	free_memory(char **splitted_word);
 //void	sort_list(t_list **a, t_list **b, char lst);
+//void	sort_3_elements(t_list **lst, int min_number);
 
 #endif
