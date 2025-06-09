@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:18:51 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/04 22:13:42 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:07:07 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -435,9 +435,7 @@ int	better_movement(t_list **b, int extreme_number)
 		counter1++;
 		pt_aux = pt_aux->next;
 	}
-	if (counter1 > ft_lstsize(*b) / 2)
-		return (1);
-	return (0);
+	return (counter1);
 }
 
 int	bigger_number(int num1, int num2)
@@ -470,18 +468,49 @@ int	get_number(t_list **lst, int (*cond)(int num1, int num2))
 	return (extreme_number);
 }
 
+s_num_move	*search_number(t_list *a, t_list **b)
+{
+	t_list		*pt_aux;
+	int			min;
+	int			max;
+	s_num_move	*num_move;
+
+	num_move = ft_calloc(sizeof(s_num_move *), 1);
+	num_move->movements = ft_calloc(sizeof(int *), 1);
+	*(int *)num_move->movements = 0;
+	num_move->number = ft_calloc(sizeof(int *), 1);
+	min = get_number(b, smaller_number);
+	max = get_number(b, bigger_number);
+	pt_aux = *b;
+	if (*(int *)a->content < min || *(int *)a->content > max)
+	{
+		*(int *)num_move->number = min;
+		return (num_move);
+	}
+	while (!(*(int *)pt_aux->content > *(int *)a->content
+			&& *(int *)previous_node(b, pt_aux)->content < *(int *)a->content))
+	{
+		*(int *)num_move->movements += 1;
+		pt_aux = pt_aux->next;
+	}
+	*(int *) num_move->number = *(int *)pt_aux->content;
+	return (num_move);
+}
+
 void	sort_3_elements(t_list **lst)
 {
 	int	movement;
 	int	min_number;
+	int	total_size;
 
+	total_size = ft_lstsize(*lst);
 	min_number = get_number(lst, smaller_number);
 	movement = better_movement(lst, min_number);
 	while (*(int *)(*lst)->content != min_number)
 	{
-		if (movement == 0)
+		if (movement <= total_size / 2)
 			rotate(lst, 'b');
-		if (movement == 1)
+		else
 		{
 			if (*(int *)(*lst)->next->content < *(int *)(*lst)->content)
 				swap(*lst, 'b');
@@ -496,45 +525,29 @@ void	sort_3_elements(t_list **lst)
 	}
 }
 
-int	search_number(t_list *a, t_list **b)
-{
-	t_list	*pt_aux;
-	int		min;
-	int		max;
-
-	min = get_number(b, smaller_number);
-	max = get_number(b, bigger_number);
-	pt_aux = *b;
-	if (*(int *)a->content < min || *(int *)a->content > max)
-		return (min);
-	while (!(*(int *)pt_aux->content > *(int *)a->content
-			&& *(int *)previous_node(b, pt_aux)->content < *(int *)a->content))
-		pt_aux = pt_aux->next;
-	return (*(int *)pt_aux->content);
-}
-
 void	sort_list(t_list **a, t_list **b)
 {
-	int		next_movement;
-	int		next_number;
+	int			total_size_b;
+	s_num_move	*next_num_move;
 
 	push(a, b, 'b');
 	push(a, b, 'b');
 	push(a, b, 'b');
 	sort_3_elements(b);
+	total_size_b = ft_lstsize(*b);
 	while (*a)
 	{
 		//better_node(a, b);
-		next_number = search_number(*a, b);
-		next_movement = better_movement(b, next_number);
-		while (*(int *)(*b)->content != next_number)
+		next_num_move = search_number(*a, b);
+		while (*(int *)(*b)->content != *(int *)next_num_move->number)
 		{
-			if (next_movement == 0)
+			if (*(int *)next_num_move->movements <= total_size_b / 2)
 				rotate(b, 'b');
-			if (next_movement == 1)
+			else
 				reverse_rotate(b, 'b');
 		}
 		push(a, b, 'b');
+		total_size_b += 1;
 	}
 }
 
@@ -543,6 +556,7 @@ int	main(int argc, char **argv)
 	t_list	**a;
 	t_list	**b;
 
+	printf("%d\n", 3 / 2);
 	if (argc >= 2)
 	{
 		argv++;

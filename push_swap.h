@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:43:37 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/04 12:09:09 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:47:38 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 # include "libft/libft.h"
 # include "libft/libftget_next_line/libftget_next_line.h"
 # include "libft/libftprintf/libftprintf.h"
+
+typedef struct number_movement
+{
+	void	*number;
+	void	*movements;
+} s_num_move;
 
 t_list	*previous_node(t_list **lst, t_list *node);
 void	swap(t_list *s, char lst);
