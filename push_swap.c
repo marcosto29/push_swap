@@ -6,12 +6,14 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:18:51 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/09 17:07:07 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:06:20 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
+
+int i = 0;
 
 void	del_number(void *number)
 {
@@ -29,8 +31,6 @@ void	free_memory(char **splitted_word)
 	}
 	free(splitted_word);
 }
-
-int	i = 0;
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -266,10 +266,10 @@ t_list	*previous_node(t_list **lst, t_list *node)
 	aux = *lst;
 	if (aux == node)
 		return (ft_lstlast(*lst));
-	while(aux->next)
+	while (aux->next)
 	{
 		if (aux->next == node)
-			return aux;
+			return (aux);
 		aux = aux->next;
 	}
 	return (NULL);
@@ -277,10 +277,10 @@ t_list	*previous_node(t_list **lst, t_list *node)
 
 void	swap(t_list *s, char lst)
 {
-	int aux;
+	int	aux;
 
 	i++;
-	if(ft_lstsize(s) <= 1)
+	if (ft_lstsize(s) <= 1)
 		return ;
 	aux = *(int *)s->content;
 	*(int *)s->content = *(int *)s->next->content;
@@ -293,7 +293,7 @@ void	swap(t_list *s, char lst)
 void	push(t_list **s1, t_list **s2, char lst)
 {
 	t_list	*aux;
-	
+
 	i++;
 	if (ft_lstsize(*s1) <= 0)
 		return ;
@@ -309,7 +309,7 @@ void	push(t_list **s1, t_list **s2, char lst)
 void	rotate(t_list **s, char lst)
 {
 	t_list	*pt_aux;
-	
+
 	i++;
 	if (ft_lstsize(*s) <= 1)
 		return ;
@@ -325,7 +325,7 @@ void	rotate(t_list **s, char lst)
 void	reverse_rotate(t_list **s, char lst)
 {
 	t_list	*pt_aux;
-	
+
 	i++;
 	if (ft_lstsize(*s) <= 1)
 		return ;
@@ -360,8 +360,8 @@ int	check_input(char *num)
 {
 	while (*num)
 	{
-		if (ft_isdigit(*num) == 0 && 
-			!((*num >= 9 && *num <= 13) || *num == 32))
+		if (ft_isdigit(*num) == 0
+			&& !((*num >= 9 && *num <= 13) || *num == 32))
 			return (0);
 		num++;
 	}
@@ -385,7 +385,7 @@ int	add_numbers(t_list **lst, char **pt_aux)
 	t_list	*node;
 
 	while (*pt_aux)
-	{		
+	{
 		aux = malloc(sizeof(int));
 		*aux = ft_atoi(*pt_aux);
 		if (check_repeated(*lst, *aux) == 0)
@@ -404,7 +404,7 @@ int	fill_list(t_list **lst, char **s)
 {
 	char	**pt_aux;
 
-	while(*s)
+	while (*s)
 	{
 		if (check_input(*s) == 0)
 		{
@@ -423,132 +423,189 @@ int	fill_list(t_list **lst, char **s)
 	return (1);
 }
 
-int	better_movement(t_list **b, int extreme_number)
+t_list	*get_node_max(t_list **lst)
 {
-	int		counter1;
-	t_list	*pt_aux;
-
-	counter1 = 0;
-	pt_aux = *b;
-	while (*(int *)pt_aux->content != extreme_number)
-	{
-		counter1++;
-		pt_aux = pt_aux->next;
-	}
-	return (counter1);
-}
-
-int	bigger_number(int num1, int num2)
-{
-	if (num2 > num1)
-		return (1);
-	return (0);
-}
-
-int	smaller_number(int num1, int num2)
-{
-	if (num2 < num1)
-		return (1);
-	return (0);
-}
-
-int	get_number(t_list **lst, int (*cond)(int num1, int num2))
-{
-	int		extreme_number;
+	t_list	*pt_return;
 	t_list	*pt_aux;
 
 	pt_aux = *lst;
-	extreme_number = *(int *)pt_aux->content;
+	pt_return = ft_calloc(sizeof(t_list), 1);
+	pt_return->content = ft_calloc(sizeof(int), 1);
+	*(int *)pt_return->content = *(int *)pt_aux->content;
 	while (pt_aux)
 	{
-		if (cond(extreme_number, *(int *)pt_aux->content) == 1)
-			extreme_number = *(int *)pt_aux->content;	
+		if (*(int *)pt_aux->content > *(int *)pt_return->content)
+			*(int *)pt_return->content = *(int *)pt_aux->content;
 		pt_aux = pt_aux->next;
 	}
-	return (extreme_number);
+	return (pt_return);
 }
 
-s_num_move	*search_number(t_list *a, t_list **b)
+t_list	*get_node_min(t_list **lst)
 {
-	t_list		*pt_aux;
-	int			min;
-	int			max;
-	s_num_move	*num_move;
+	t_list	*pt_return;
+	t_list	*pt_aux;
 
-	num_move = ft_calloc(sizeof(s_num_move *), 1);
-	num_move->movements = ft_calloc(sizeof(int *), 1);
-	*(int *)num_move->movements = 0;
-	num_move->number = ft_calloc(sizeof(int *), 1);
-	min = get_number(b, smaller_number);
-	max = get_number(b, bigger_number);
-	pt_aux = *b;
-	if (*(int *)a->content < min || *(int *)a->content > max)
+	pt_aux = *lst;
+	pt_return = ft_calloc(sizeof(t_list), 1);
+	pt_return->content = ft_calloc(sizeof(int), 1);
+	*(int *)pt_return->content = *(int *)pt_aux->content;
+	while (pt_aux)
 	{
-		*(int *)num_move->number = min;
-		return (num_move);
-	}
-	while (!(*(int *)pt_aux->content > *(int *)a->content
-			&& *(int *)previous_node(b, pt_aux)->content < *(int *)a->content))
-	{
-		*(int *)num_move->movements += 1;
+		if (*(int *)pt_aux->content < *(int *)pt_return->content)
+			*(int *)pt_return->content = *(int *)pt_aux->content;
 		pt_aux = pt_aux->next;
 	}
-	*(int *) num_move->number = *(int *)pt_aux->content;
-	return (num_move);
+	return (pt_return);
 }
 
-void	sort_3_elements(t_list **lst)
+void	move_to_node(t_list **lst, t_list *node, int size_lst, char c)
 {
-	int	movement;
-	int	min_number;
-	int	total_size;
+	int		moves;
+	t_list	*pt_aux;
 
-	total_size = ft_lstsize(*lst);
-	min_number = get_number(lst, smaller_number);
-	movement = better_movement(lst, min_number);
-	while (*(int *)(*lst)->content != min_number)
+	pt_aux = *lst;
+	moves = 0;
+	while (*(int *)pt_aux->content != *(int *)node->content)
 	{
-		if (movement <= total_size / 2)
-			rotate(lst, 'b');
+		moves++;
+		pt_aux = pt_aux->next;
+	}
+	while (*(int *)(*lst)->content != *(int *)node->content)
+	{
+		if (moves <= size_lst / 2)
+			rotate(lst, c);
 		else
-		{
-			if (*(int *)(*lst)->next->content < *(int *)(*lst)->content)
-				swap(*lst, 'b');
-			reverse_rotate(lst, 'b');
-		}
-	}
-	if (*(int *)(*lst)->next->content > *(int *)ft_lstlast((*lst))->content)
-	{
-		rotate(lst, 'b');
-		swap(*lst, 'b');
-		reverse_rotate(lst, 'b');
+			reverse_rotate(lst, c);
 	}
 }
 
-void	sort_list(t_list **a, t_list **b)
+t_node_moves	*search_extreme_insert_position(t_list **a, t_list *extreme)
 {
-	int			total_size_b;
-	s_num_move	*next_num_move;
+	int				counter;
+	t_list			*pt_aux;
+	t_node_moves	*pt_return;
 
-	push(a, b, 'b');
-	push(a, b, 'b');
-	push(a, b, 'b');
-	sort_3_elements(b);
-	total_size_b = ft_lstsize(*b);
-	while (*a)
+	counter = 0;
+	pt_aux = *a;
+	pt_return = ft_calloc(sizeof(t_node_moves), 1);
+	pt_return->moves = ft_calloc(sizeof(int), 1);
+	while (*(int *)pt_aux->content != *(int *)extreme->content)
 	{
-		//better_node(a, b);
-		next_num_move = search_number(*a, b);
-		while (*(int *)(*b)->content != *(int *)next_num_move->number)
-		{
-			if (*(int *)next_num_move->movements <= total_size_b / 2)
-				rotate(b, 'b');
-			else
-				reverse_rotate(b, 'b');
-		}
-		push(a, b, 'b');
-		total_size_b += 1;
+		pt_aux = pt_aux->next;
+		counter++;
 	}
+	pt_return->node = pt_aux;
+	*(int *)pt_return->moves = counter;
+	return (pt_return);
+}
+
+t_node_moves	*search_mid_insert_position(t_list **a, t_list *b)
+{
+	int				counter;
+	t_list			*pt_aux;
+	t_node_moves	*pt_return;
+
+	counter = 0;
+	pt_aux = *a;
+	pt_return = ft_calloc(sizeof(t_node_moves), 1);
+	pt_return->moves = ft_calloc(sizeof(int), 1);
+	while (!(*(int *)pt_aux->content > *(int *)b->content
+			&& *(int *)previous_node(a, pt_aux)->content < *(int *)b->content))
+	{
+		pt_aux = pt_aux->next;
+		counter++;
+	}
+	pt_return->node = pt_aux;
+	*(int *)pt_return->moves = counter;
+	return (pt_return);
+}
+
+t_node_moves	*search_correct_position(t_list **a, t_list *b)
+{
+	t_list	*min;
+	t_list	*max;
+
+	min = get_node_min(a);
+	max = get_node_max(a);
+	if (*(int *)b->content < *(int *)min->content
+		|| *(int *)b->content > *(int *)max->content)
+		return (search_extreme_insert_position(a, min));
+	else
+		return (search_mid_insert_position(a, b));
+}
+
+void	evaluate_optimal_node(t_optimal_nodes *return_nodes, t_list **a, t_list *pt_aux, int moves_b)
+{
+	t_node_moves		*node_a;
+
+	node_a = search_correct_position(a, pt_aux);
+	if (*(int *)node_a->moves + moves_b < *(int *)return_nodes->moves)
+	{
+		*(int *)return_nodes->moves = *(int *)node_a->moves + moves_b;
+		return_nodes->node_b = pt_aux;
+		return_nodes->node_a = node_a->node;
+	}
+}
+
+t_optimal_nodes	*o_nodes(t_list **a, t_list **b, int size_b)
+{
+	int				j;
+	int				moves_b;
+	t_list			*pt_aux;
+	t_optimal_nodes	*return_nodes;
+
+	j = 0;
+	pt_aux = *b;
+	return_nodes = ft_calloc(sizeof(t_optimal_nodes), 1);
+	return_nodes->moves = ft_calloc(sizeof(int), 1);
+	*(int *)return_nodes->moves = __INT_MAX__;
+	while (pt_aux)
+	{
+		if (j <= size_b / 2)
+			moves_b = j;
+		else
+			moves_b = size_b - j;
+		evaluate_optimal_node(return_nodes, a, pt_aux, moves_b);
+		pt_aux = pt_aux->next;
+		j++;
+	}
+	return (return_nodes);
+}
+
+static void	sort_list(t_list **a, t_list **b, int size_a, int size_b)
+{
+	t_optimal_nodes	*next_nodes;
+	t_list			*min;
+
+	while (size_b--)
+	{
+		next_nodes = o_nodes(a, b, size_b);
+		move_to_node(a, next_nodes->node_a, size_a, 'a');
+		move_to_node(b, next_nodes->node_b, size_b, 'b');
+		push(b, a, 'a');
+		size_a++;
+	}
+	min = get_node_min(a);
+	move_to_node(a, min, size_a, 'a');
+}
+
+void	prepare_sort_list(t_list **a, t_list **b)
+{
+	int			size_a;
+	int			size_b;
+
+	size_a = ft_lstsize(*a);
+	size_b = 0;
+	while (size_a > 2)
+	{
+		push(a, b, 'b');
+		size_a--;
+		size_b++;
+	}
+	if (*(int *)(*a)->content > *(int *)(*a)->next->content)
+		swap(*a, 'a');
+	sort_list(a, b, size_a, size_b);
 }
 
 int	main(int argc, char **argv)
@@ -556,7 +613,6 @@ int	main(int argc, char **argv)
 	t_list	**a;
 	t_list	**b;
 
-	printf("%d\n", 3 / 2);
 	if (argc >= 2)
 	{
 		argv++;
@@ -567,15 +623,15 @@ int	main(int argc, char **argv)
 			//ft_printf("Error\n");
 			exit(1);
 		}
-		sort_list(a, b);
-		while (*b)
+		prepare_sort_list(a, b);	
+		while (*a)
 		{
-			printf("%d \n", *(int *)(*b)->content);
-			(*b) = (*b)->next;
+			printf("%d\n", *(int *)(*a)->content);
+			*a = (*a)->next;
 		}
-		//ft_lstclear(a, del_number);
+		printf("operaciones: %d\n", i);
+		ft_lstclear(a, del_number);
 		free(a);
-		printf("%d operaciones\n", i);
 	}
 	exit (0);
 }

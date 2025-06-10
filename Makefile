@@ -6,7 +6,7 @@
 #    By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 19:53:00 by matoledo          #+#    #+#              #
-#    Updated: 2025/06/03 11:01:38 by matoledo         ###   ########.fr        #
+#    Updated: 2025/06/10 20:51:59 by matoledo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = push_swap.c \
+		search_utils.c \
 		push_swap_utils.c \
 		sort_algorithm.c \
 		input_parse.c \

@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:41:58 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/04 20:28:12 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:15:09 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_list	*previous_node(t_list **lst, t_list *node)
 
 	aux = *lst;
 	if (aux == node)
-		return (ft_lstlast(lst));
+		return (ft_lstlast(*lst));
 	while (aux->next)
 	{
 		if (aux->next == node)
@@ -32,12 +32,11 @@ void	swap(t_list *s, char lst)
 {
 	int	aux;
 
-	if (ft_lstsize(s) <= 0)
-	{
-		aux = *(int *)s->content;
-		*(int *)s->content = *(int *)s->next->content;
-		*(int *)s->next->content = aux;
-	}
+	if (ft_lstsize(s) <= 1)
+		return ;
+	aux = *(int *)s->content;
+	*(int *)s->content = *(int *)s->next->content;
+	*(int *)s->next->content = aux;
 	write(1, "s", 1);
 	write(1, &lst, 1);
 	write(1, "\n", 1);

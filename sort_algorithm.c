@@ -6,130 +6,102 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 12:48:57 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/04 20:31:18 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:06:29 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-// int	better_movement(t_list **b, int extreme_number)
-// {
-// 	int		counter1;
-// 	t_list	*pt_aux;
+void	move_to_node(t_list **lst, t_list *node, int size_lst, char c)
+{
+	int		moves;
+	t_list	*pt_aux;
 
-// 	counter1 = 0;
-// 	pt_aux = *b;
-// 	while (*(int *)pt_aux->content != extreme_number)
-// 	{
-// 		counter1++;
-// 		pt_aux = pt_aux->next;
-// 	}
-// 	if (counter1 > ft_lstsize(*b) / 2)
-// 		return (1);
-// 	return (0);
-// }
+	pt_aux = *lst;
+	moves = 0;
+	while (*(int *)pt_aux->content != *(int *)node->content)
+	{
+		moves++;
+		pt_aux = pt_aux->next;
+	}
+	while (*(int *)(*lst)->content != *(int *)node->content)
+	{
+		if (moves <= size_lst / 2)
+			rotate(lst, c);
+		else
+			reverse_rotate(lst, c);
+	}
+}
 
-// int	bigger_number(int num1, int num2)
-// {
-// 	if (num2 > num1)
-// 		return (1);
-// 	return (0);
-// }
+static void	evaluate_optimal_node(t_optimal_nodes *return_nodes, t_list **a, t_list *pt_aux, int moves_b)
+{
+	t_node_moves		*node_a;
 
-// int	smaller_number(int num1, int num2)
-// {
-// 	if (num2 < num1)
-// 		return (1);
-// 	return (0);
-// }
+	node_a = search_correct_position(a, pt_aux);
+	if (*(int *)node_a->moves + moves_b < *(int *)return_nodes->moves)
+	{
+		*(int *)return_nodes->moves = *(int *)node_a->moves + moves_b;
+		return_nodes->node_b = pt_aux;
+		return_nodes->node_a = node_a->node;
+	}
+}
 
-// int	get_number(t_list **lst, int (*cond)(int num1, int num2))
-// {
-// 	int		extreme_number;
-// 	t_list	*pt_aux;
+t_optimal_nodes	*o_nodes(t_list **a, t_list **b, int size_b)
+{
+	int				j;
+	int				moves_b;
+	t_list			*pt_aux;
+	t_optimal_nodes	*return_nodes;
 
-// 	pt_aux = *lst;
-// 	extreme_number = *(int *)pt_aux->content;
-// 	while(pt_aux)
-// 	{
-// 		if (cond(extreme_number, *(int *)pt_aux->content) == 1)
-// 			extreme_number = *(int *)pt_aux->content;			
-// 		pt_aux = pt_aux->next;
-// 	}
-// 	return (extreme_number);
-// }
+	j = 0;
+	pt_aux = *b;
+	return_nodes = ft_calloc(sizeof(t_optimal_nodes), 1);
+	return_nodes->moves = ft_calloc(sizeof(int), 1);
+	*(int *)return_nodes->moves = __INT_MAX__;
+	while (pt_aux)
+	{
+		if (j <= size_b / 2)
+			moves_b = j;
+		else
+			moves_b = size_b - j;
+		evaluate_optimal_node(return_nodes, a, pt_aux, moves_b);
+		pt_aux = pt_aux->next;
+		j++;
+	}
+	return (return_nodes);
+}
 
-// void	sort_3_elements(t_list **lst, int min_number)
-// {
-// 	int	movement;
+static void	sort_list(t_list **a, t_list **b, int size_a, int size_b)
+{
+	t_optimal_nodes	*next_nodes;
+	t_list			*min;
 
-// 	movement = better_movement(lst, min_number);
-// 	while (*(int *)(*lst )->content != min_number)
-// 	{
-// 		if (movement == 0)
-// 			rotate(lst, 'b');
-// 		if (movement == 1)
-// 		{
-// 			if (*(int *)(*lst)->next->content < *(int *)(*lst)->content)
-// 				swap(*lst, 'b');
-// 			reverse_rotate(lst, 'b');
-// 		}
-// 	}
-// 	if (*(int *)(*lst)->next->content > *(int *)ft_lstlast((*lst))->content)
-// 	{
-// 		rotate(lst, 'b');
-// 		swap(*lst, 'b');
-// 		reverse_rotate(lst, 'b');
-// 	}
-// }
+	while (size_b--)
+	{
+		next_nodes = o_nodes(a, b, size_b);
+		move_to_node(a, next_nodes->node_a, size_a, 'a');
+		move_to_node(b, next_nodes->node_b, size_b, 'b');
+		push(b, a, 'a');
+		size_a++;
+	}
+	min = get_node_min(a);
+	move_to_node(a, min, size_a, 'a');
+}
 
-// int	search_number(t_list *a, t_list **b, int min, int max)
-// {
-// 	t_list	*pt_aux;
+void	prepare_sort_list(t_list **a, t_list **b)
+{
+	int			size_a;
+	int			size_b;
 
-// 	pt_aux = *b;
-// 	if (*(int *)a->content < min)
-// 		return (min);
-// 	if (*(int *)a->content > max)
-// 		return (min);
-// 	while (!(*(int *)pt_aux->content > *(int *)a->content &&
-// 		*(int *)previous_node(b, pt_aux)->content < *(int *)a->content))
-// 		pt_aux = pt_aux->next;
-// 	return (*(int *)pt_aux->content);
-// }
-
-// void	sort_list(t_list **a, t_list **b)
-// {
-// 	int		min_number;
-// 	int		max_number;
-// 	int		next_movement;
-// 	int		next_number;
-
-// 	push(a, b, 'b');
-// 	push(a, b, 'b');
-// 	push(a, b, 'b');
-// 	min_number = get_number(b, smaller_number);
-// 	max_number = get_number(b, bigger_number);
-// 	sort_3_elements(b, min_number);
-// 	while(*a)
-// 	{
-// 		//esto busca el mejor movimiento para el primer nodo
-// 		//pero antes de esto se podría mirar si algún otro nodo tiene mejor movimiento
-// 		next_number = search_number(*a, b, min_number, max_number);
-// 		next_movement = better_movement(b, next_number);
-// 		while (*(int *)(*b)->content != next_number)
-// 		{
-// 			if (next_movement == 0)
-// 				rotate(b, 'b');
-// 			if (next_movement == 1)
-// 				reverse_rotate(b, 'b');
-// 		}
-// 		if (*(int *)(*a)->content > max_number)
-// 			max_number = *(int *)(*a)->content;
-// 		if (*(int *)(*a)->content < min_number)
-// 			min_number = *(int *)(*a)->content;
-// 		push(a, b, 'b');
-// 	}
-// 	while (*(int *)(*b)->content != min_number)
-// 		rotate(b, 'b');
-// }
+	size_a = ft_lstsize(*a);
+	size_b = 0;
+	while (size_a > 2)
+	{
+		push(a, b, 'b');
+		size_a--;
+		size_b++;
+	}
+	if (*(int *)(*a)->content > *(int *)(*a)->next->content)
+		swap(*a, 'a');
+	sort_list(a, b, size_a, size_b);
+}
