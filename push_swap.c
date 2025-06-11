@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:18:51 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/10 21:06:20 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:39:20 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include <stdio.h>
 
 int i = 0;
+
+void	ft_del_optimal(t_optimal_nodes *lst, void(*del)(void *))
+{
+	del(lst->moves);
+	free(lst);
+}
 
 void	del_number(void *number)
 {
@@ -356,6 +362,22 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 	}
 }
 
+int	check_sorted(t_list *lst)
+{
+	t_list	*pt_aux;
+
+	pt_aux = lst;
+	pt_aux = pt_aux->next;
+	while (pt_aux)
+	{
+		if (*(int *)pt_aux->content < *(int *)lst->content)
+			return (1);
+		pt_aux = pt_aux->next;
+		lst = lst->next;
+	}
+	return (0);
+}
+
 int	check_input(char *num)
 {
 	while (*num)
@@ -408,13 +430,15 @@ int	fill_list(t_list **lst, char **s)
 	{
 		if (check_input(*s) == 0)
 		{
-			free_memory(pt_aux);
+			ft_lstclear(lst, del_number);
+			free(lst);
 			return (0);
 		}
 		pt_aux = ft_split(*s, ' ');
 		if (add_numbers(lst, pt_aux) == 0)
 		{
-			free_memory(pt_aux);
+			ft_lstclear(lst, del_number);
+			free(lst);
 			return (0);
 		}
 		free_memory(pt_aux);
@@ -459,6 +483,69 @@ t_list	*get_node_min(t_list **lst)
 	return (pt_return);
 }
 
+static t_node_moves	*search_extreme_insert_position(t_list **a, t_list *extreme)
+{
+	int				counter;
+	t_list			*pt_aux;
+	t_node_moves	*pt_return;
+
+	counter = 0;
+	pt_aux = *a;
+	pt_return = ft_calloc(sizeof(t_node_moves), 1);
+	pt_return->moves = ft_calloc(sizeof(int), 1);
+	while (*(int *)pt_aux->content != *(int *)extreme->content)
+	{
+		pt_aux = pt_aux->next;
+		counter++;
+	}
+	ft_lstdelone(extreme, del_number);
+	pt_return->node = pt_aux;
+	*(int *)pt_return->moves = counter;
+	return (pt_return);
+}
+
+static t_node_moves	*search_mid_insert_position(t_list **a, t_list *m)
+{
+	int				counter;
+	t_list			*pt_aux;
+	t_node_moves	*pt_return;
+
+	counter = 0;
+	pt_aux = *a;
+	pt_return = ft_calloc(sizeof(t_node_moves), 1);
+	pt_return->moves = ft_calloc(sizeof(int), 1);
+	while (!(*(int *)pt_aux->content > *(int *)m->content
+			&& *(int *)previous_node(a, pt_aux)->content < *(int *)m->content))
+	{
+		pt_aux = pt_aux->next;
+		counter++;
+	}
+	pt_return->node = pt_aux;
+	*(int *)pt_return->moves = counter;
+	return (pt_return);
+}
+
+t_node_moves	*search_correct_position(t_list **a, t_list *b)
+{
+	t_list	*min;
+	t_list	*max;
+
+	min = get_node_min(a);
+	max = get_node_max(a);
+	if (*(int *)b->content < *(int *)min->content
+		|| *(int *)b->content > *(int *)max->content)
+	{
+		ft_lstdelone(max, del_number);
+		return (search_extreme_insert_position(a, min));
+	}
+	else
+	{
+		ft_lstdelone(min, del_number);
+		ft_lstdelone(max, del_number);
+		return (search_mid_insert_position(a, b));
+	}
+}
+
 void	move_to_node(t_list **lst, t_list *node, int size_lst, char c)
 {
 	int		moves;
@@ -480,62 +567,8 @@ void	move_to_node(t_list **lst, t_list *node, int size_lst, char c)
 	}
 }
 
-t_node_moves	*search_extreme_insert_position(t_list **a, t_list *extreme)
-{
-	int				counter;
-	t_list			*pt_aux;
-	t_node_moves	*pt_return;
-
-	counter = 0;
-	pt_aux = *a;
-	pt_return = ft_calloc(sizeof(t_node_moves), 1);
-	pt_return->moves = ft_calloc(sizeof(int), 1);
-	while (*(int *)pt_aux->content != *(int *)extreme->content)
-	{
-		pt_aux = pt_aux->next;
-		counter++;
-	}
-	pt_return->node = pt_aux;
-	*(int *)pt_return->moves = counter;
-	return (pt_return);
-}
-
-t_node_moves	*search_mid_insert_position(t_list **a, t_list *b)
-{
-	int				counter;
-	t_list			*pt_aux;
-	t_node_moves	*pt_return;
-
-	counter = 0;
-	pt_aux = *a;
-	pt_return = ft_calloc(sizeof(t_node_moves), 1);
-	pt_return->moves = ft_calloc(sizeof(int), 1);
-	while (!(*(int *)pt_aux->content > *(int *)b->content
-			&& *(int *)previous_node(a, pt_aux)->content < *(int *)b->content))
-	{
-		pt_aux = pt_aux->next;
-		counter++;
-	}
-	pt_return->node = pt_aux;
-	*(int *)pt_return->moves = counter;
-	return (pt_return);
-}
-
-t_node_moves	*search_correct_position(t_list **a, t_list *b)
-{
-	t_list	*min;
-	t_list	*max;
-
-	min = get_node_min(a);
-	max = get_node_max(a);
-	if (*(int *)b->content < *(int *)min->content
-		|| *(int *)b->content > *(int *)max->content)
-		return (search_extreme_insert_position(a, min));
-	else
-		return (search_mid_insert_position(a, b));
-}
-
-void	evaluate_optimal_node(t_optimal_nodes *return_nodes, t_list **a, t_list *pt_aux, int moves_b)
+static void	evaluate_optimal_node(t_optimal_nodes *return_nodes, t_list **a,
+									t_list *pt_aux, int moves_b)
 {
 	t_node_moves		*node_a;
 
@@ -546,6 +579,8 @@ void	evaluate_optimal_node(t_optimal_nodes *return_nodes, t_list **a, t_list *pt
 		return_nodes->node_b = pt_aux;
 		return_nodes->node_a = node_a->node;
 	}
+	del_number(node_a->moves);
+	free(node_a);
 }
 
 t_optimal_nodes	*o_nodes(t_list **a, t_list **b, int size_b)
@@ -584,10 +619,26 @@ static void	sort_list(t_list **a, t_list **b, int size_a, int size_b)
 		move_to_node(a, next_nodes->node_a, size_a, 'a');
 		move_to_node(b, next_nodes->node_b, size_b, 'b');
 		push(b, a, 'a');
+		del_number(next_nodes->moves);
+		free(next_nodes);
 		size_a++;
 	}
 	min = get_node_min(a);
 	move_to_node(a, min, size_a, 'a');
+	ft_lstdelone(min, del_number);
+}
+
+void	sort_3_elements(t_list	**a)
+{
+	t_list	*max;
+	
+	max = get_node_max(a);
+	while (*(int *)ft_lstlast(*a)->content != *(int *)max->content)
+		rotate(a, 'a');
+	if (*(int *)(*a)->content > *(int *)(*a)->next->content)
+		swap(*a, 'a');
+	del_number(max->content);
+	free(max);
 }
 
 void	prepare_sort_list(t_list **a, t_list **b)
@@ -597,14 +648,13 @@ void	prepare_sort_list(t_list **a, t_list **b)
 
 	size_a = ft_lstsize(*a);
 	size_b = 0;
-	while (size_a > 2)
+	while (size_a > 3)
 	{
 		push(a, b, 'b');
 		size_a--;
 		size_b++;
 	}
-	if (*(int *)(*a)->content > *(int *)(*a)->next->content)
-		swap(*a, 'a');
+	sort_3_elements(a);
 	sort_list(a, b, size_a, size_b);
 }
 
@@ -615,23 +665,24 @@ int	main(int argc, char **argv)
 
 	if (argc >= 2)
 	{
-		argv++;
-		b = ft_calloc(sizeof(t_list *), 1);
 		a = ft_calloc(sizeof(t_list *), 1);
-		if (fill_list(a, argv) == 0)
+		if (fill_list(a, argv + 1) == 0)
 		{
 			//ft_printf("Error\n");
 			exit(1);
 		}
-		prepare_sort_list(a, b);	
-		while (*a)
+		if (check_sorted(*a) == 0)
 		{
-			printf("%d\n", *(int *)(*a)->content);
-			*a = (*a)->next;
+			ft_lstclear(a, del_number);
+			free(a);
+			exit(0);
 		}
+		b = ft_calloc(sizeof(t_list *), 1);
+		prepare_sort_list(a, b);	
 		printf("operaciones: %d\n", i);
 		ft_lstclear(a, del_number);
 		free(a);
+		free(b);
 	}
 	exit (0);
 }

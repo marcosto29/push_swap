@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:43:37 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/10 21:06:46 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:22:01 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void			swap(t_list *s, char lst);
 void			push(t_list **s1, t_list **s2, char lst);
 void			rotate(t_list **s, char lst);
 void			reverse_rotate(t_list **s, char lst);
+int				check_sorted(t_list *lst);
 int				check_input(char *num);
 int				check_repeated(t_list *lst, int num);
 int				add_numbers(t_list **lst, char **pt_aux);
@@ -45,5 +46,6 @@ void			move_to_node(t_list **lst, t_list *node, int size_lst, char c);
 void			prepare_sort_list(t_list **a, t_list **b);
 t_list			*get_node_max(t_list **lst);
 t_list			*get_node_min(t_list **lst);
+void			sort_3_elements(t_list	**a);
 
 #endif

@@ -6,11 +6,27 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 10:56:59 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/10 18:14:23 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:28:55 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+int	check_sorted(t_list *lst)
+{
+	t_list	*pt_aux;
+
+	pt_aux = lst;
+	pt_aux = pt_aux->next;
+	while (pt_aux)
+	{
+		if (*(int *)pt_aux->content < *(int *)lst->content)
+			return (1);
+		pt_aux = pt_aux->next;
+		lst = lst->next;
+	}
+	return (0);
+}
 
 int	check_input(char *num)
 {
@@ -64,13 +80,15 @@ int	fill_list(t_list **lst, char **s)
 	{
 		if (check_input(*s) == 0)
 		{
-			free_memory(pt_aux);
+			ft_lstclear(lst, del_number);
+			free(lst);
 			return (0);
 		}
 		pt_aux = ft_split(*s, ' ');
 		if (add_numbers(lst, pt_aux) == 0)
 		{
-			free_memory(pt_aux);
+			ft_lstclear(lst, del_number);
+			free(lst);
 			return (0);
 		}
 		free_memory(pt_aux);

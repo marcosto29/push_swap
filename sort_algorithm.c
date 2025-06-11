@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 12:48:57 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/10 21:06:29 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:22:37 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	move_to_node(t_list **lst, t_list *node, int size_lst, char c)
 	}
 }
 
-static void	evaluate_optimal_node(t_optimal_nodes *return_nodes, t_list **a, t_list *pt_aux, int moves_b)
+static void	evaluate_optimal_node(t_optimal_nodes *return_nodes, t_list **a,
+									t_list *pt_aux, int moves_b)
 {
 	t_node_moves		*node_a;
 
@@ -44,6 +45,8 @@ static void	evaluate_optimal_node(t_optimal_nodes *return_nodes, t_list **a, t_l
 		return_nodes->node_b = pt_aux;
 		return_nodes->node_a = node_a->node;
 	}
+	del_number(node_a->moves);
+	free(node_a);
 }
 
 t_optimal_nodes	*o_nodes(t_list **a, t_list **b, int size_b)
@@ -82,10 +85,13 @@ static void	sort_list(t_list **a, t_list **b, int size_a, int size_b)
 		move_to_node(a, next_nodes->node_a, size_a, 'a');
 		move_to_node(b, next_nodes->node_b, size_b, 'b');
 		push(b, a, 'a');
+		del_number(next_nodes->moves);
+		free(next_nodes);
 		size_a++;
 	}
 	min = get_node_min(a);
 	move_to_node(a, min, size_a, 'a');
+	ft_lstdelone(min, del_number);
 }
 
 void	prepare_sort_list(t_list **a, t_list **b)
@@ -95,13 +101,12 @@ void	prepare_sort_list(t_list **a, t_list **b)
 
 	size_a = ft_lstsize(*a);
 	size_b = 0;
-	while (size_a > 2)
+	while (size_a > 3)
 	{
 		push(a, b, 'b');
 		size_a--;
 		size_b++;
 	}
-	if (*(int *)(*a)->content > *(int *)(*a)->next->content)
-		swap(*a, 'a');
+	sort_3_elements(a);
 	sort_list(a, b, size_a, size_b);
 }

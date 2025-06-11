@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   del_management.c                                   :+:      :+:    :+:   */
+/*   3_elements.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 11:00:55 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/11 13:17:48 by matoledo         ###   ########.fr       */
+/*   Created: 2025/06/11 14:20:27 by matoledo          #+#    #+#             */
+/*   Updated: 2025/06/11 15:14:32 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	del_number(void *number)
+void	sort_3_elements(t_list	**a)
 {
-	free(number);
-}
-
-void	free_memory(char **splitted_word)
-{
-	char	**pt_aux;
-
-	pt_aux = splitted_word;
-	while (*pt_aux)
-	{
-		free(*pt_aux++);
-	}
-	free(splitted_word);
+	t_list	*max;
+	
+	max = get_node_max(a);
+	while (*(int *)ft_lstlast(*a)->content != *(int *)max->content)
+		rotate(a, 'a');
+	if (*(int *)(*a)->content > *(int *)(*a)->next->content)
+		swap(*a, 'a');
+	del_number(max->content);
+	free(max);
 }
