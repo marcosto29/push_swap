@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:18:51 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/12 12:47:16 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/12 22:27:50 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ int	main(int argc, char **argv)
 			ft_printf("Error\n");
 			exit(1);
 		}
-		if (check_sorted(*a) == 0)
+		if (!(*a) || check_sorted(*a) == 0)
 		{
 			ft_lstclear(a, del_number);
 			free(a);
 			exit(0);
 		}
 		b = ft_calloc(sizeof(t_list *), 1);
-		prepare_sort_list(a, b);
+		prepare_sort_list(a, b);	
 		ft_lstclear(a, del_number);
 		free(a);
 		free(b);
