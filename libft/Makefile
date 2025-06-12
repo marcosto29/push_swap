@@ -6,7 +6,7 @@
 #    By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/12 16:09:09 by matoledo          #+#    #+#              #
-#    Updated: 2025/05/27 13:42:14 by matoledo         ###   ########.fr        #
+#    Updated: 2025/06/12 11:33:56 by matoledo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ CFLAGS = -Wall -Werror -Wextra
 
 NAME = libft.a
 
-SRCS = ft_atoi.c \
+SRCS = ft_atol.c \
+	ft_atoi.c \
 	ft_bzero.c \
 	ft_calloc.c \
 	ft_isalnum.c \

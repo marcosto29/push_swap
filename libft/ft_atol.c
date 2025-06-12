@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   del_management.c                                   :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 11:00:55 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/12 11:37:52 by matoledo         ###   ########.fr       */
+/*   Created: 2025/06/12 11:33:18 by matoledo          #+#    #+#             */
+/*   Updated: 2025/06/12 11:33:32 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-
-void	del_number(void *number)
+long	ft_atol(const char *nptr)
 {
-	free(number);
-}
+	long	number;
+	long	negative;
 
-void	free_memory(char **splitted_word)
-{
-	char	**pt_aux;
-
-	pt_aux = splitted_word;
-	while (*pt_aux)
+	number = 0;
+	negative = 1;
+	while ((*nptr >= 9 && *nptr <= 13) || *nptr == 32)
+		nptr++;
+	if (*nptr == 43 || *nptr == 45)
 	{
-		free(*pt_aux++);
+		if (*nptr == 45)
+			negative = -1;
+		nptr++;
 	}
-	free(splitted_word);
+	while (ft_isdigit(*nptr))
+	{
+		number = number * 10 + (*nptr - '0');
+		nptr++;
+	}
+	return (number * negative);
 }

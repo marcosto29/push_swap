@@ -6,7 +6,7 @@
 #    By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 19:53:00 by matoledo          #+#    #+#              #
-#    Updated: 2025/06/11 15:39:44 by matoledo         ###   ########.fr        #
+#    Updated: 2025/06/12 12:17:25 by matoledo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRCS = push_swap.c \
 		input_parse.c \
 		del_management.c \
 		3_elements.c \
+		checker.c \
 
 OBJS = $(SRCS:.c=.o)
 
