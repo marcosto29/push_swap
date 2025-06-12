@@ -6,12 +6,11 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:00:55 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/12 11:37:52 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:48:01 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
 
 void	del_number(void *number)
 {

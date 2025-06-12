@@ -6,12 +6,11 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:18:51 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/12 12:22:02 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:47:16 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
 int	main(int argc, char **argv)
 {
