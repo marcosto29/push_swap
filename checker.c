@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 11:46:16 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/12 12:47:40 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:11:08 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,21 @@ int	check_sorted(t_list *lst)
 
 int	check_input(char *num)
 {
+	int	counter;
+
+	counter = 0;
 	if (*num == '-' || *num == '+')
 		num++;
 	while (*num)
 	{
+		counter++;
 		if (ft_isdigit(*num) == 0
 			&& !((*num >= 9 && *num <= 13) || *num == 32))
 			return (0);
 		num++;
 	}
+	if (counter >= 11)
+		return (0);
 	return (1);
 }
 
