@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:43:37 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/12 12:14:38 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:17:43 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int				check_sorted(t_list *lst);
 int				check_input(char *num);
 int				check_repeated(t_list *lst, int num);
 int				check_bigger_int(char *pt_aux);
-int				add_numbers(t_list **lst, char **pt_aux);
 int				fill_list(t_list **lst, char **s);
 void			del_number(void *number);
 void			free_memory(char **splitted_word);

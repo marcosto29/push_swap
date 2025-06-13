@@ -6,13 +6,13 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 10:56:59 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/13 09:12:58 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:17:24 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	add_number(t_list **lst, char *pt_aux)
+static int	add_number(t_list **lst, char *pt_aux)
 {
 	int		*aux;
 	long	*checker;

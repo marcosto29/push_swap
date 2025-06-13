@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 12:48:57 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/11 14:22:37 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:19:10 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	evaluate_optimal_node(t_optimal_nodes *return_nodes, t_list **a,
 	free(node_a);
 }
 
-t_optimal_nodes	*o_nodes(t_list **a, t_list **b, int size_b)
+static t_optimal_nodes	*o_nodes(t_list **a, t_list **b, int size_b)
 {
 	int				j;
 	int				moves_b;
