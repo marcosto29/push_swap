@@ -6,7 +6,7 @@
 /*   By: matoledo <matoledo@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 10:56:59 by matoledo          #+#    #+#             */
-/*   Updated: 2025/06/13 09:17:24 by matoledo         ###   ########.fr       */
+/*   Updated: 2025/06/14 12:30:30 by matoledo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	fill_list(t_list **lst, char **s)
 		{
 			if (check_input(*pt_aux) == 0 || add_number(lst, *pt_aux) == 0)
 			{
-				free_memory(pt_aux);
+				free_memory(pt_free);
 				ft_lstclear(lst, del_number);
 				free(lst);
 				return (0);
